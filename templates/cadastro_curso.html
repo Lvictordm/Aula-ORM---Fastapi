@@ -1,27 +1,291 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastrar Curso — Plataforma de estudos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple-deep: #3d0070;
+      --purple-core: #6a0dad;
+      --purple-mid: #8e44ad;
+      --purple-light: #b07cce;
+      --purple-pale: #f0e4ff;
+      --gold: #e8c86e;
+      --white: #ffffff;
+      --off-white: #faf7ff;
+      --text-dark: #1a0030;
+      --text-mid: #4a3060;
+      --text-light: #8a7099;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple-core) 55%, var(--purple-mid) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background grid + glow */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      top: -150px; right: -150px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(174,94,255,0.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* ── NAV STRIP ── */
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 18px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(61, 0, 112, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      z-index: 50;
+    }
+
+    .top-bar-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .top-bar-logo span { color: var(--gold); }
+
+    .top-bar-back {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+      transition: color 0.2s;
+    }
+    .top-bar-back:hover { color: var(--gold); }
+
+    /* ── CARD ── */
+    .card {
+      position: relative; z-index: 1;
+      background: var(--white);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 480px;
+      padding: 52px 48px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+      animation: slideUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .card-eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--purple-pale);
+      color: var(--purple-core);
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .card-eyebrow::before { content: '✦'; font-size: 0.55rem; }
+
+    .card h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .card-sub {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(106,13,173,0.15), transparent);
+      margin-bottom: 32px;
+    }
+
+    /* ── FORM ── */
+    .field {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-mid);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e2d6f0;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background: var(--off-white);
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+      outline: none;
+      resize: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--purple-core);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(106,13,173,0.1);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #c0b0d0;
+    }
+
+    textarea { height: 100px; }
+
+    /* ── SUBMIT ── */
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--purple-core), var(--purple-mid));
+      color: var(--white);
+      border: none;
+      border-radius: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      margin-top: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-submit::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(106,13,173,0.4);
+    }
+
+    .btn-submit:active { transform: translateY(0); }
+
+    /* ── BACK LINK ── */
+    .form-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+    .form-footer a {
+      color: var(--purple-core);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .form-footer a:hover { text-decoration: underline; }
+
+    /* ── PROGRESS DOTS ── */
+    .progress {
+      display: flex; gap: 8px; margin-bottom: 32px;
+    }
+    .progress-dot {
+      height: 4px; border-radius: 4px;
+      background: #e2d6f0;
+      flex: 1;
+      transition: background 0.3s;
+    }
+    .progress-dot.active { background: var(--purple-core); }
+
+    /* ── ANIMATION ── */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (max-width: 520px) {
+      .card { padding: 40px 28px; }
+      .top-bar { padding: 16px 24px; }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <a href="/" class="top-bar-logo">Edu<span>Plataforma</span></a>
+    <a href="/" class="top-bar-back">← Voltar ao início</a>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="card">
+    <div class="card-eyebrow">Painel Administrativo</div>
     <h1>Cadastrar Curso</h1>
+    <p class="card-sub">Preencha as informações abaixo para adicionar um novo curso à plataforma.</p>
+
+    <div class="progress">
+      <div class="progress-dot active"></div>
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+    </div>
+
+    <div class="divider"></div>
+
     <form action="/cursos" method="post">
-        <p>
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
-        </p>
-        <p>
-            <label for="nome">Carga Hóraria:</label>
-            <input type="text" id="nome" name="carga_horaria" required>
-        </p>
-        <p>
-            <label for="nome">descrição:</label>
-            <input type="text" id="nome" name="descricao">
-        </p>
-        <p>
-            <button type="submit">Cadastrar</button>
-        </p>
+      <div class="field">
+        <label for="nome">Nome do Curso</label>
+        <input type="text" id="nome" name="nome" placeholder="Ex: Desenvolvimento Web Completo" required>
+      </div>
+
+      <div class="field">
+        <label for="carga">Carga Horária</label>
+        <input type="text" id="carga" name="carga_horaria" placeholder="Ex: 40h" required>
+      </div>
+
+      <div class="field">
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" name="descricao" placeholder="Descreva o conteúdo e objetivos do curso..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">Cadastrar Curso →</button>
     </form>
+
+    <div class="form-footer">
+      Quer ver os cursos cadastrados? <a href="/">Ir para o início</a>
+    </div>
+  </div>
+
 </body>
+</html>

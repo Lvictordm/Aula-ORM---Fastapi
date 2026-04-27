@@ -1,0 +1,15 @@
+<h1>Cursos</h1>
+
+<a href="/cursos/cadastros">Novo curso</a>
+
+<ul>
+    {% for curso in cursos %}
+        <li>
+            {{curso.nome}} - {{curso.carga_horaria}}
+        </li>
+        {% endfor %}
+</ul>
+
+<a href="/">Home</a>
+<!-- #fazer a personalização dessa aba depois
+#fazer um form action="/cursos/{id}/deletar", method="post">< button type /form> -->

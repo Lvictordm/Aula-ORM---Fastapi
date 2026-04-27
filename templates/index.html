@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduPlataforma — Cursos Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple-deep: #3d0070;
+      --purple-core: #6a0dad;
+      --purple-mid: #8e44ad;
+      --purple-light: #b07cce;
+      --purple-pale: #f0e4ff;
+      --gold: #e8c86e;
+      --white: #ffffff;
+      --off-white: #faf7ff;
+      --text-dark: #1a0030;
+      --text-mid: #4a3060;
+      --text-light: #8a7099;
+    }
+
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 60px;
+      background: rgba(61, 0, 112, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex; gap: 36px; list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: var(--purple-deep) !important;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600 !important;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(232,200,110,0.4);
+      color: var(--purple-deep) !important;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple-core) 55%, var(--purple-mid) 100%);
+      display: flex; align-items: center;
+      padding: 120px 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 80% 30%, rgba(174,94,255,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(61,0,112,0.6) 0%, transparent 60%);
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 640px;
+      animation: heroIn 0.9s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--gold);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-badge::before { content: '✦'; font-size: 0.6rem; }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--gold);
+      position: relative;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.7;
+      max-width: 500px;
+      margin-bottom: 44px;
+    }
+
+    .hero-actions {
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 16px 40px;
+      background: var(--gold);
+      color: var(--purple-deep);
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(232,200,110,0.45);
+    }
+
+    .btn-ghost {
+      padding: 16px 40px;
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .hero-visual {
+      position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 16px;
+      animation: heroIn 1.1s 0.2s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 16px;
+      padding: 20px 28px;
+      min-width: 200px;
+    }
+    .stat-card .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .stat-card .lbl {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 100px 60px;
+      background: var(--white);
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--purple-core);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-mid);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 60px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+    }
+
+    .feat-card {
+      padding: 36px 32px;
+      border-radius: 20px;
+      background: var(--off-white);
+      border: 1px solid rgba(106,13,173,0.08);
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feat-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--purple-core), var(--purple-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .feat-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(106,13,173,0.1); }
+    .feat-card:hover::after { transform: scaleX(1); }
+
+    .feat-icon {
+      width: 52px; height: 52px;
+      background: var(--purple-pale);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    .feat-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    .feat-card p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.65;
+    }
+
+    /* ── COURSES PREVIEW ── */
+    .courses {
+      padding: 100px 60px;
+      background: var(--purple-deep);
+      position: relative;
+      overflow: hidden;
+    }
+    .courses::before {
+      content: '';
+      position: absolute; top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(142,68,173,0.3) 0%, transparent 70%);
+    }
+
+    .courses .section-label { color: var(--gold); }
+    .courses .section-title { color: var(--white); }
+    .courses .section-sub { color: rgba(255,255,255,0.6); }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .course-card {
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 32px;
+      transition: transform 0.25s, background 0.25s;
+      position: relative;
+    }
+    .course-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.11);
+    }
+
+    .course-tag {
+      display: inline-block;
+      background: rgba(232,200,110,0.15);
+      color: var(--gold);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .course-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .course-card p {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .course-meta {
+      display: flex; gap: 16px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+    }
+    .course-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── CTA STRIP ── */
+    .cta-strip {
+      padding: 80px 60px;
+      background: linear-gradient(135deg, var(--purple-core), var(--purple-mid));
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 32px;
+    }
+
+    .cta-strip-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .cta-strip-text p {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.95rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--text-dark);
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+      padding: 32px 60px;
+      font-size: 0.85rem;
+    }
+    footer strong { color: rgba(255,255,255,0.7); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 18px 28px; }
+      .nav-links { display: none; }
+      .hero { padding: 120px 28px 80px; }
+      .hero-visual { display: none; }
+      .features, .courses, .cta-strip { padding: 70px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">lolo<span>Plataforma</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Início</a></li>
+      <li><a href="#">Cursos</a></li>
+      <li><a href="#">Sobre</a></li>
+      <li><a href="/cursos/cadastro" class="nav-cta">Novo Curso</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Plataforma de Ensino</div>
+      <h1 class="hero-title">
+        Aprenda com quem<br><em>realmente</em> ensina
+      </h1>
+      <p class="hero-sub">
+        Cursos criados por especialistas, trilhas personalizadas e uma experiência de aprendizado que transforma carreiras.
+      </p>
+      <div class="hero-actions">
+        <a href="#cursos" class="btn-primary">Explorar Cursos →</a>
+        <a href="/cursos/cadastro" class="btn-ghost">+ Cadastrar Curso</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="stat-card">
+        <div class="num">+2.400</div>
+        <div class="lbl">Alunos Ativos</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">98%</div>
+        <div class="lbl">Satisfação</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">150+</div>
+        <div class="lbl">Cursos Disponíveis</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="fade-in">
+      <div class="section-label">Por que nos escolher</div>
+      <h2 class="section-title">Uma plataforma feita para evoluir</h2>
+      <p class="section-sub">Cada detalhe foi pensado para que você aprenda mais rápido e aplique com confiança.</p>
+    </div>
+    <div class="features-grid fade-in">
+      <div class="feat-card">
+        <div class="feat-icon">🎯</div>
+        <h3>Aprendizado Focado</h3>
+        <p>Conteúdo estruturado em módulos objetivos, sem enrolação. Vá direto ao que importa.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📜</div>
+        <h3>Certificado Reconhecido</h3>
+        <p>Ao concluir, receba um certificado verificável para destacar no seu currículo e LinkedIn.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⏱️</div>
+        <h3>Acesso Vitalício</h3>
+        <p>Estude no seu ritmo, volte quando quiser e acompanhe as atualizações do curso.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🤝</div>
+        <h3>Suporte Ativo</h3>
+        <p>Tire dúvidas diretamente com instrutores e interaja com a comunidade de alunos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COURSES -->
+  <section class="courses" id="cursos">
+    <div class="fade-in">
+      <div class="section-label">Catálogo em Destaque</div>
+      <h2 class="section-title">Cursos mais procurados</h2>
+      <p class="section-sub">Escolha sua trilha e comece hoje mesmo a transformar seu futuro profissional.</p>
+    </div>
+    <div class="courses-grid fade-in">
+      <div class="course-card">
+        <div class="course-tag">Tecnologia</div>
+        <h3>Desenvolvimento Web Completo</h3>
+        <p>Do HTML básico ao deploy em produção. Tudo que você precisa para se tornar um dev full-stack.</p>
+        <div class="course-meta">
+          <span>⏱ 80h</span>
+          <span>★ 4.9</span>
+          <span>👥 1.2k alunos</span>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-tag">Design</div>
+        <h3>UI/UX Design Profissional</h3>
+        <p>Crie interfaces incríveis com Figma e aprenda os fundamentos de experiência do usuário.</p>
+        <div class="course-meta">
+          <span>⏱ 45h</span>
+          <span>★ 4.8</span>
+          <span>👥 870 alunos</span>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-tag">Negócios</div>
+        <h3>Marketing Digital na Prática</h3>
+        <p>Estratégias reais de tráfego pago, SEO e redes sociais para crescer qualquer negócio.</p>
+        <div class="course-meta">
+          <span>⏱ 36h</span>
+          <span>★ 4.7</span>
+          <span>👥 640 alunos</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="cta-strip">
+    <div class="cta-strip-text">
+      <h2>Pronto para cadastrar um novo curso?</h2>
+      <p>Adicione seu conteúdo à plataforma e alcance centenas de alunos.</p>
+    </div>
+    <a href="/cursos/cadastro" class="btn-primary">Cadastrar Curso →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 <strong>Plataforma de estudos</strong> — Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
